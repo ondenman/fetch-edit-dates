@@ -1,12 +1,12 @@
 {
-  "name": "wiki_updates",
+  "name": "fetch_edit_dates",
   "version": "1.0.0",
-  "description": "",
+  "description": "Retrieve ",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "babel dev/app.js --out-file dist/app.js",
-    "chain": "npm run build && node dist/app.js"
+    "build": "babel dev/app.js --out-file build/app.js",
+    "chain": "npm run build && node build/app.js"
   },
   "author": "",
   "license": "ISC",
