@@ -1,6 +1,8 @@
 'use strict'
 
 import request from 'sync-request'
+import fs from 'fs'
+import util from 'util'
 
 const scrape = {
 
@@ -24,7 +26,26 @@ const scrape = {
 	}
 }
 
-let baseURL = 'https://en.wikipedia.org/w/api.php?action=query&format=json&prop=revisions&rvprop=timestamp&titles='
-let url = scrape.constructURL(baseURL, 'Donald_Trump', 500)
-let dates = scrape.fetchDates(scrape.fetchJSON(url))
-console.log(dates)
+const BASE_URL = 'https://en.wikipedia.org/w/api.php?action=query&format=json&prop=revisions&rvprop=timestamp&titles='
+
+function dateArrayFor(name) {
+	let url = scrape.constructURL(BASE_URL, name, 10)
+	return scrape.fetchDates(scrape.fetchJSON(url))
+			.map( i => i.timestamp)
+}
+
+function save(arr) {
+	let str = util.inspect(arr)
+	let file = __dirname+'/data/dates.js'
+	fs.writeFileSync(file, str)
+}
+
+let arr = [
+	{ name: 'Clinton', dates: dateArrayFor('Hillary_Clinton') },
+	{ name: 'Trump', dates: dateArrayFor('Donald_Trump') },
+	{ name: 'Cruz', dates: dateArrayFor('Ted_Cruz') },
+	{ name: 'Kasich', dates: dateArrayFor('John_Kasich') },
+	{ name: 'Sanders', dates: dateArrayFor('Bernie_Sanders') }
+]
+
+save(arr)
